@@ -4,6 +4,17 @@
  */
 package login;
 
+import dashboard.Dashboard;
+import dashboard.DashboardData;
+import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static login.LoginAction.getUserByPrivateKey;
+import static login.LoginAction.loginWithPrivateKey;
+
 /**
  *
  * @author 62877
@@ -15,6 +26,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -35,10 +47,10 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        textField1 = new login.TextField();
+        keyStore = new login.TextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        button1 = new login.Button();
+        accWallet = new login.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 51, 51));
@@ -118,12 +130,12 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Paste your keystore here");
 
-        textField1.setPreferredSize(new java.awt.Dimension(25, 45));
-        textField1.setRound(5);
-        textField1.setShadowColor(new java.awt.Color(28, 69, 194));
-        textField1.addActionListener(new java.awt.event.ActionListener() {
+        keyStore.setPreferredSize(new java.awt.Dimension(25, 45));
+        keyStore.setRound(5);
+        keyStore.setShadowColor(new java.awt.Color(28, 69, 194));
+        keyStore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textField1ActionPerformed(evt);
+                keyStoreActionPerformed(evt);
             }
         });
 
@@ -134,7 +146,7 @@ public class Login extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(keyStore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jLabel4)
@@ -147,7 +159,7 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(23, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(keyStore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -158,12 +170,21 @@ public class Login extends javax.swing.JFrame {
 
         jLabel6.setText("Never share your keystore with anyone.");
 
-        button1.setBackground(new java.awt.Color(28, 69, 194));
-        button1.setForeground(new java.awt.Color(255, 255, 255));
-        button1.setText("Access Wallet");
-        button1.addActionListener(new java.awt.event.ActionListener() {
+        accWallet.setBackground(new java.awt.Color(28, 69, 194));
+        accWallet.setForeground(new java.awt.Color(255, 255, 255));
+        accWallet.setText("Access Wallet");
+        accWallet.setShadowColor(new java.awt.Color(118, 118, 118));
+        accWallet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                accWalletMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                accWalletMouseExited(evt);
+            }
+        });
+        accWallet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
+                accWalletActionPerformed(evt);
             }
         });
 
@@ -172,21 +193,19 @@ public class Login extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addComponent(jLabel6)
                 .addContainerGap(107, Short.MAX_VALUE))
+            .addComponent(accWallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(accWallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         panel1.add(jPanel4);
@@ -217,13 +236,46 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField1ActionPerformed
+    private void keyStoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyStoreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textField1ActionPerformed
+    }//GEN-LAST:event_keyStoreActionPerformed
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button1ActionPerformed
+    private void accWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accWalletActionPerformed
+        String keyStoreText = keyStore.getText().trim();
+
+        if (keyStoreText.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Private Key tidak boleh kosong!",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            try {
+                loginWithPrivateKey(keyStoreText);
+                String idData = getUserByPrivateKey(keyStoreText);
+
+                // Buat instance DashboardData dan simpan userId
+                DashboardData dashboardData = new DashboardData(idData);
+
+                // Buka Dashboard.form dan kirim DashboardData
+                Dashboard dashboard = new Dashboard();
+                dashboard.setDashboardData(dashboardData);
+                dashboard.setVisible(true);
+                this.dispose();
+
+            } catch (IOException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_accWalletActionPerformed
+
+    private void accWalletMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accWalletMouseEntered
+        accWallet.setBackground(Color.decode("#0E2148"));
+    }//GEN-LAST:event_accWalletMouseEntered
+
+    private void accWalletMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accWalletMouseExited
+        accWallet.setBackground(Color.decode("#483AA0"));
+    }//GEN-LAST:event_accWalletMouseExited
 
     /**
      * @param args the command line arguments
@@ -261,7 +313,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private login.Button button1;
+    private login.Button accWallet;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -272,7 +324,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
+    private login.TextField keyStore;
     private login.Panel panel1;
-    private login.TextField textField1;
     // End of variables declaration//GEN-END:variables
 }

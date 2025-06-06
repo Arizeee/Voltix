@@ -4,17 +4,68 @@
  */
 package dashboard;
 
+import java.awt.Color;
+import java.io.IOException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 62877
  */
 public class Dashboard extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Dashboard
-     */
+    DashboardData dashboardData = new DashboardData();
+    // Field untuk menyimpan DashboardData
+//    public DashboardData DashboardData;
+
     public Dashboard() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }
+
+    // Method untuk menerima DashboardData dari Login
+    public void setDashboardData(DashboardData data) {
+        this.dashboardData = data;
+
+        // Sekarang bisa akses userId
+        String userId = this.dashboardData.getUserId();
+        System.out.println("User ID di Dashboard: " + userId);
+
+        // Load data wallet otomatis
+        loadWalletData();
+    }
+
+    public void loadWalletData() {
+        try {
+            if (this.dashboardData != null) {
+                // Ambil data wallet dari database
+                this.dashboardData.getWallets();
+
+                // Update UI dengan data yang sudah didapat
+                updateUI();
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error loading wallet data: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void updateUI() {
+        // Karena field di DashboardData sudah public, bisa langsung diakses
+        if (dashboardData != null) {
+            // Direct access ke public fields
+            String userId = dashboardData.IdUser;
+            Double balance = dashboardData.balance;
+            String address = dashboardData.address;
+
+            // Update UI components
+            // jLabelUserId.setText("User ID: " + userId);
+            coinBalance.setText(balance.toString());
+            walletAddress.setText(address);
+        }
     }
 
     /**
@@ -34,11 +85,12 @@ public class Dashboard extends javax.swing.JFrame {
         panel2 = new dashboard.Panel();
         jPanel6 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        coinBalance = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        walletAddress = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         button4 = new dashboard.Button();
-        button3 = new dashboard.Button();
+        sendButton = new dashboard.Button();
         button5 = new dashboard.Button();
         panel4 = new dashboard.Panel();
         panel5 = new dashboard.Panel();
@@ -73,8 +125,8 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1000, 50));
 
         jLabel3.setFont(new java.awt.Font("Source Code Pro Semibold", 1, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(28, 69, 194));
-        jLabel3.setText("Voltix");
+        jLabel3.setForeground(new java.awt.Color(121, 101, 193));
+        jLabel3.setText("Welcome to Voltix.");
 
         button1.setBackground(new java.awt.Color(242, 245, 255));
         button1.setForeground(new java.awt.Color(153, 153, 153));
@@ -93,7 +145,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 797, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 670, Short.MAX_VALUE)
                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -124,11 +176,20 @@ public class Dashboard extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 42)); // NOI18N
-        jLabel2.setText("$7,6000.00");
+        coinBalance.setFont(new java.awt.Font("Segoe UI", 1, 42)); // NOI18N
+        coinBalance.setText("0.0");
+        coinBalance.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                coinBalanceComponentShown(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        jLabel4.setText("Balance");
+        jLabel4.setText("Vol Balance");
+
+        walletAddress.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        walletAddress.setForeground(new java.awt.Color(14, 33, 72));
+        walletAddress.setText("address");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -137,9 +198,10 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(walletAddress)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel2))
-                .addContainerGap(122, Short.MAX_VALUE))
+                    .addComponent(coinBalance))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,8 +209,10 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addGap(32, 32, 32))
+                .addComponent(coinBalance)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(walletAddress)
+                .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -162,12 +226,20 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        button3.setForeground(new java.awt.Color(28, 69, 194));
-        button3.setText("Send");
-        button3.setShadowColor(new java.awt.Color(28, 69, 194));
-        button3.addActionListener(new java.awt.event.ActionListener() {
+        sendButton.setForeground(new java.awt.Color(28, 69, 194));
+        sendButton.setText("Send");
+        sendButton.setShadowColor(new java.awt.Color(28, 69, 194));
+        sendButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                sendButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                sendButtonMouseExited(evt);
+            }
+        });
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button3ActionPerformed(evt);
+                sendButtonActionPerformed(evt);
             }
         });
 
@@ -188,7 +260,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
@@ -199,7 +271,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(button3, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                    .addComponent(sendButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                     .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29))
         );
@@ -211,7 +283,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(518, Short.MAX_VALUE))
+                .addContainerGap(729, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                     .addContainerGap(570, Short.MAX_VALUE)
@@ -242,6 +314,11 @@ public class Dashboard extends javax.swing.JFrame {
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("$10,000.00");
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel5MouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel5Layout = new javax.swing.GroupLayout(panel5);
         panel5.setLayout(panel5Layout);
@@ -323,21 +400,21 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(panel2Layout.createSequentialGroup()
                 .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel2Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panel2Layout.createSequentialGroup()
                         .addGap(71, 71, 71)
-                        .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel2Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         panel2Layout.setVerticalGroup(
             panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel2Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(41, 41, 41)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         panel1.add(panel2);
@@ -515,7 +592,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -531,9 +608,14 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_button2ActionPerformed
 
-    private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button3ActionPerformed
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
+        SendForm sendSection = new SendForm();
+        String userId = dashboardData.IdUser;
+        SendAction sendData = new SendAction(userId);
+
+        sendSection.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_sendButtonActionPerformed
 
     private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
         // TODO add your handling code here:
@@ -542,6 +624,23 @@ public class Dashboard extends javax.swing.JFrame {
     private void button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_button5ActionPerformed
+
+    private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel5MouseEntered
+
+    private void coinBalanceComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_coinBalanceComponentShown
+//        coinBalance.setText(Ddata.BalanceUser().toString());
+    }//GEN-LAST:event_coinBalanceComponentShown
+
+    private void sendButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendButtonMouseEntered
+        sendButton.setBackground(Color.decode("#7965C1"));
+    }//GEN-LAST:event_sendButtonMouseEntered
+
+    private void sendButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendButtonMouseExited
+        sendButton.setBackground(Color.decode("#FFFFFF"));
+
+    }//GEN-LAST:event_sendButtonMouseExited
 
     /**
      * @param args the command line arguments
@@ -581,16 +680,15 @@ public class Dashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private dashboard.Button button1;
     private dashboard.Button button2;
-    private dashboard.Button button3;
     private dashboard.Button button4;
     private dashboard.Button button5;
+    private javax.swing.JLabel coinBalance;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -612,5 +710,7 @@ public class Dashboard extends javax.swing.JFrame {
     private dashboard.Panel panel6;
     private dashboard.Panel panel7;
     private dashboard.Panel panel8;
+    private dashboard.Button sendButton;
+    private javax.swing.JLabel walletAddress;
     // End of variables declaration//GEN-END:variables
 }

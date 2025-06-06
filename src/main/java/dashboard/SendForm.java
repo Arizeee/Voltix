@@ -4,6 +4,8 @@
  */
 package dashboard;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author 62877
@@ -15,6 +17,7 @@ public class SendForm extends javax.swing.JFrame {
      */
     public SendForm() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**
