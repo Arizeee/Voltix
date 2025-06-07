@@ -95,6 +95,99 @@ public class LoginAction {
             return null;
         }
     }
+    
+    public static String getUsernameByUserId(String userId) throws IOException {
+        String endpoint = SUPABASE_URL + "/rest/v1/users?id=eq." + userId + "&select=username";
+        Request request = new Request.Builder()
+                .url(endpoint)
+                .get()
+                .addHeader("apikey", SUPABASE_API_KEY)
+                .addHeader("Authorization", "Bearer " + SUPABASE_API_KEY)
+                .build();
+
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) return null;
+            String responseBody = response.body().string();
+            List<Map<String, Object>> list = objectMapper.readValue(responseBody, new TypeReference<List<Map<String, Object>>>(){});
+            if (!list.isEmpty()) {
+                return list.get(0).get("username").toString();
+            }
+            return null;
+        }
+    }
+
+    // Fungsi transfer saldo ke username tujuan
+    public static boolean transferToUsername(String senderId, String destUsername, double amount) throws IOException {
+        // Cari userId tujuan dari username
+        String endpoint = SUPABASE_URL + "/rest/v1/users?username=eq." + destUsername + "&select=id";
+        Request request = new Request.Builder()
+                .url(endpoint)
+                .get()
+                .addHeader("apikey", SUPABASE_API_KEY)
+                .addHeader("Authorization", "Bearer " + SUPABASE_API_KEY)
+                .build();
+
+        String recipientId = null;
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) return false;
+            String responseBody = response.body().string();
+            List<Map<String, Object>> list = objectMapper.readValue(responseBody, new TypeReference<List<Map<String, Object>>>(){});
+            if (!list.isEmpty()) {
+                recipientId = list.get(0).get("id").toString();
+            } else {
+                return false; // username tujuan tidak ditemukan
+            }
+        }
+
+        // Cek saldo pengirim
+        double senderBalance = getUserBalance(senderId);
+        if (senderBalance < amount) return false;
+
+        // Update saldo
+        boolean senderUpdate = updateUserBalance(senderId, senderBalance - amount);
+        double recipientBalance = getUserBalance(recipientId);
+        boolean recipientUpdate = updateUserBalance(recipientId, recipientBalance + amount);
+
+        return senderUpdate && recipientUpdate;
+    }
+
+    public static double getUserBalance(String userId) throws IOException {
+        String endpoint = SUPABASE_URL + "/rest/v1/wallets?user_id=eq." + userId + "&select=balance";
+        Request request = new Request.Builder()
+                .url(endpoint)
+                .get()
+                .addHeader("apikey", SUPABASE_API_KEY)
+                .addHeader("Authorization", "Bearer " + SUPABASE_API_KEY)
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Failed to get balance");
+            String responseBody = response.body().string();
+            List<Map<String, Object>> list = objectMapper.readValue(responseBody, new TypeReference<List<Map<String, Object>>>() {});
+            if (!list.isEmpty()) {
+                Object bal = list.get(0).get("balance");
+                if (bal != null) return Double.parseDouble(bal.toString());
+            }
+        }
+        return 0.0;
+    }
+
+    public static boolean updateUserBalance(String userId, double newBalance) throws IOException {
+        String endpoint = SUPABASE_URL + "/rest/v1/wallets?user_id=eq." + userId;
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("balance", newBalance);
+        String jsonBody = objectMapper.writeValueAsString(updateMap);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.parse("application/json"));
+        Request request = new Request.Builder()
+                .url(endpoint)
+                .patch(body)
+                .addHeader("apikey", SUPABASE_API_KEY)
+                .addHeader("Authorization", "Bearer " + SUPABASE_API_KEY)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            return response.isSuccessful();
+        }
+    }
 
     /**
      * INSERT data ke tabel "users".

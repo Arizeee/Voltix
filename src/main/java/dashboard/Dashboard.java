@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
  * @author 62877
  */
 public class Dashboard extends javax.swing.JFrame {
+//    public String IdUser;
+//    private String userId;
 
     DashboardData dashboardData = new DashboardData();
     // Field untuk menyimpan DashboardData
@@ -283,7 +285,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(729, Short.MAX_VALUE))
+                .addContainerGap(727, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                     .addContainerGap(570, Short.MAX_VALUE)
@@ -609,10 +611,9 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_button2ActionPerformed
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
-        SendForm sendSection = new SendForm();
+        // Ambil userId dari Dashboard
         String userId = dashboardData.IdUser;
-        SendAction sendData = new SendAction(userId);
-
+        SendForm sendSection = new SendForm(userId);
         sendSection.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_sendButtonActionPerformed

@@ -5,19 +5,26 @@
 package dashboard;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author 62877
  */
 public class SendForm extends javax.swing.JFrame {
+   private String userId;
 
     /**
      * Creates new form SendForm
      */
-    public SendForm() {
+    public SendForm(String userId) {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        this.userId = userId;
+        // Cek apakah userId sudah diterima
+        System.out.println("User ID diterima di SendForm: " + userId);
+        
     }
 
     /**
@@ -38,16 +45,15 @@ public class SendForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        textField2 = new dashboard.TextField();
+        amountTextField = new dashboard.TextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        textField3 = new dashboard.TextField();
+        destUsernameTextField = new dashboard.TextField();
         jPanel6 = new javax.swing.JPanel();
         button1 = new login.Button();
-        button2 = new login.Button();
+        sendButton = new login.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 500));
 
         jPanel2.setBackground(new java.awt.Color(242, 245, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(800, 500));
@@ -128,11 +134,11 @@ public class SendForm extends javax.swing.JFrame {
         jLabel5.setText("Amount");
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        textField2.setPreferredSize(new java.awt.Dimension(76, 45));
-        textField2.setShadowColor(new java.awt.Color(28, 69, 194));
-        textField2.addActionListener(new java.awt.event.ActionListener() {
+        amountTextField.setPreferredSize(new java.awt.Dimension(76, 45));
+        amountTextField.setShadowColor(new java.awt.Color(28, 69, 194));
+        amountTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textField2ActionPerformed(evt);
+                amountTextFieldActionPerformed(evt);
             }
         });
 
@@ -147,7 +153,7 @@ public class SendForm extends javax.swing.JFrame {
                         .addComponent(jLabel5))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addComponent(textField2, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(amountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -156,7 +162,7 @@ public class SendForm extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(amountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -165,14 +171,14 @@ public class SendForm extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setPreferredSize(new java.awt.Dimension(388, 75));
 
-        jLabel6.setText("Message");
+        jLabel6.setText("Destination Username");
         jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        textField3.setPreferredSize(new java.awt.Dimension(76, 45));
-        textField3.setShadowColor(new java.awt.Color(28, 69, 194));
-        textField3.addActionListener(new java.awt.event.ActionListener() {
+        destUsernameTextField.setPreferredSize(new java.awt.Dimension(76, 45));
+        destUsernameTextField.setShadowColor(new java.awt.Color(28, 69, 194));
+        destUsernameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textField3ActionPerformed(evt);
+                destUsernameTextFieldActionPerformed(evt);
             }
         });
 
@@ -187,7 +193,7 @@ public class SendForm extends javax.swing.JFrame {
                         .addComponent(jLabel6))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addComponent(textField3, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(destUsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -196,7 +202,7 @@ public class SendForm extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(destUsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -214,12 +220,12 @@ public class SendForm extends javax.swing.JFrame {
             }
         });
 
-        button2.setBackground(new java.awt.Color(28, 69, 194));
-        button2.setForeground(new java.awt.Color(255, 255, 255));
-        button2.setText("Access Wallet");
-        button2.addActionListener(new java.awt.event.ActionListener() {
+        sendButton.setBackground(new java.awt.Color(28, 69, 194));
+        sendButton.setForeground(new java.awt.Color(255, 255, 255));
+        sendButton.setText("Send");
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button2ActionPerformed(evt);
+                sendButtonActionPerformed(evt);
             }
         });
 
@@ -234,7 +240,7 @@ public class SendForm extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(15, 15, 15)
-                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(17, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
@@ -246,7 +252,7 @@ public class SendForm extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(10, 10, 10)
-                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(49, Short.MAX_VALUE)))
         );
 
@@ -274,21 +280,96 @@ public class SendForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField2ActionPerformed
+    private void amountTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textField2ActionPerformed
+    }//GEN-LAST:event_amountTextFieldActionPerformed
 
-    private void textField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField3ActionPerformed
+    private void destUsernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destUsernameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textField3ActionPerformed
+    }//GEN-LAST:event_destUsernameTextFieldActionPerformed
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_button1ActionPerformed
 
-    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_button2ActionPerformed
+        String amountText = amountTextField.getText().trim();
+        String destUsername = destUsernameTextField.getText().trim();
+
+        // Validasi input
+        if (amountText.isEmpty() || destUsername.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua field wajib diisi!");
+            return;
+        }
+
+        // Pastikan amount angka valid
+        double amount;
+        try {
+            amount = Double.parseDouble(amountText);
+            if (amount <= 0) {
+                JOptionPane.showMessageDialog(this, "Amount harus lebih dari 0!");
+                return;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Amount harus berupa angka!");
+            return;
+        }
+
+        try {
+            // Dapatkan username sendiri dari userId (atau simpan di session saat login)
+            String myUsername = login.LoginAction.getUsernameByUserId(userId);
+            if (destUsername.equalsIgnoreCase(myUsername)) {
+                JOptionPane.showMessageDialog(this, "Tidak bisa transfer ke username sendiri!");
+                return;
+            }
+            
+            // Ambil address pengirim (dari userId)
+            String senderAddress = TransactionService.getAddressByUserId(userId);
+            // Ambil address penerima (dari username tujuan)
+            String receiverAddress = TransactionService.getAddressByUsername(destUsername);
+
+            // Lakukan transfer
+            boolean success = login.LoginAction.transferToUsername(userId, destUsername, amount);
+            if (success) {
+                // Insert ke tabel transaksi
+             // Insert transaksi untuk pengirim (send)
+            String trxSendId = TransactionService.insertTransaction(
+                senderAddress, receiverAddress, amount, "send", ""
+            );
+            // Insert transaksi untuk penerima (receive)
+            String trxReceiveId = TransactionService.insertTransaction(
+                senderAddress, receiverAddress, amount, "receive", ""
+            );
+            
+            boolean trxSend = trxSendId != null;
+            boolean trxReceive = trxReceiveId != null;
+
+            if (trxSend && trxReceive) {
+                // Buat block untuk masing-masing transaksi
+                String trxSendJson = TransactionService.getTransactionJsonById(trxSendId);
+                String trxReceiveJson = TransactionService.getTransactionJsonById(trxReceiveId);
+
+                BlockService.createBlockForTransaction(trxSendId, trxSendJson);
+                BlockService.createBlockForTransaction(trxReceiveId, trxReceiveJson);
+
+                JOptionPane.showMessageDialog(this, "Transfer berhasil & transaksi serta block tercatat!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Transfer berhasil, tapi gagal mencatat transaksi/block!");
+            }
+//                JOptionPane.showMessageDialog(this, "Transfer berhasil!");
+                DashboardData dashboardData = new DashboardData(userId);
+                Dashboard dashboard = new Dashboard();
+                dashboard.setDashboardData(dashboardData);
+                dashboard.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Transfer gagal! Username tujuan tidak ditemukan, atau saldo tidak cukup.");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_sendButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -320,14 +401,16 @@ public class SendForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SendForm().setVisible(true);
+//                new SendForm().setVisible(true);
+                new SendForm("").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private dashboard.TextField amountTextField;
     private login.Button button1;
-    private login.Button button2;
+    private dashboard.TextField destUsernameTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -340,7 +423,6 @@ public class SendForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private dashboard.Panel panel2;
-    private dashboard.TextField textField2;
-    private dashboard.TextField textField3;
+    private login.Button sendButton;
     // End of variables declaration//GEN-END:variables
 }

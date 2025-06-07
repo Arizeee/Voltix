@@ -10,6 +10,8 @@ dashboard\SendForm$3.class
 dashboard\Dashboard$6.class
 login\Login$1.class
 dashboard\Dashboard$3.class
+login\LoginAction$2.class
+dashboard\TransactionService.class
 dashboard\TextField.class
 dashboard\SendForm$2.class
 dashboard\TextField$TextUI.class
@@ -17,6 +19,7 @@ dashboard\Dashboard$8.class
 com\mycompany\dashboard\Dashboard.class
 login\Login.class
 dashboard\Dashboard$7.class
+login\LoginAction$4.class
 login\Login$4.class
 login\Login$2.class
 dashboard\Dashboard$5.class
@@ -28,12 +31,15 @@ dashboard\SendForm$4.class
 dashboard\Dashboard.class
 login\PasswordField.class
 dashboard\Dashboard$9.class
+dashboard\BlockService.class
 login\LoginAction$1.class
 dashboard\SendForm.class
 config\DatabaseConf.class
+login\LoginAction$3.class
 swing\shadow\ShadowRenderer.class
 dashboard\DashboardData.class
 login\Button.class
 dashboard\Dashboard$4.class
 login\LoginAction.class
+util\HashUtil.class
 dashboard\SendForm$1.class
