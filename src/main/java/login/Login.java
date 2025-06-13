@@ -51,6 +51,7 @@ public class Login extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         accWallet = new login.Button();
+        toRegister = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 51, 51));
@@ -97,14 +98,14 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Access Your Wallet");
 
-        jLabel3.setText("Send, receive, and pay in just a few taps.");
+        jLabel3.setText("Never share your keystore with anyone.");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
+                .addContainerGap(95, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -168,7 +169,7 @@ public class Login extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setPreferredSize(new java.awt.Dimension(388, 100));
 
-        jLabel6.setText("Never share your keystore with anyone.");
+        jLabel6.setText("Don't have a Voltix?");
 
         accWallet.setBackground(new java.awt.Color(28, 69, 194));
         accWallet.setForeground(new java.awt.Color(255, 255, 255));
@@ -188,15 +189,25 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        toRegister.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        toRegister.setText("Create one");
+        toRegister.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                toRegisterMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jLabel6)
-                .addContainerGap(107, Short.MAX_VALUE))
             .addComponent(accWallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(103, 103, 103)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(toRegister)
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,7 +215,9 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(accWallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(toRegister))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -277,6 +290,11 @@ public class Login extends javax.swing.JFrame {
         accWallet.setBackground(Color.decode("#483AA0"));
     }//GEN-LAST:event_accWalletMouseExited
 
+    private void toRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toRegisterMouseClicked
+//        new register.Register().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_toRegisterMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -326,5 +344,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private login.TextField keyStore;
     private login.Panel panel1;
+    private javax.swing.JLabel toRegister;
     // End of variables declaration//GEN-END:variables
 }

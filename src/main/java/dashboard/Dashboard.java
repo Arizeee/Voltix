@@ -83,7 +83,7 @@ public class Dashboard extends javax.swing.JFrame {
         panel1 = new dashboard.Panel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        button1 = new dashboard.Button();
+        logoutButton = new dashboard.Button();
         panel2 = new dashboard.Panel();
         jPanel6 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -91,9 +91,9 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         walletAddress = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        button4 = new dashboard.Button();
+        receiveButton = new dashboard.Button();
         sendButton = new dashboard.Button();
-        button5 = new dashboard.Button();
+        copyButton = new dashboard.Button();
         panel4 = new dashboard.Panel();
         panel5 = new dashboard.Panel();
         jLabel5 = new javax.swing.JLabel();
@@ -130,13 +130,21 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(121, 101, 193));
         jLabel3.setText("Welcome to Voltix.");
 
-        button1.setBackground(new java.awt.Color(242, 245, 255));
-        button1.setForeground(new java.awt.Color(153, 153, 153));
-        button1.setText("Logout");
-        button1.setShadowColor(new java.awt.Color(0, 102, 255));
-        button1.addActionListener(new java.awt.event.ActionListener() {
+        logoutButton.setBackground(new java.awt.Color(242, 245, 255));
+        logoutButton.setForeground(new java.awt.Color(153, 153, 153));
+        logoutButton.setText("Logout");
+        logoutButton.setShadowColor(new java.awt.Color(0, 102, 255));
+        logoutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logoutButtonMouseExited(evt);
+            }
+        });
+        logoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
+                logoutButtonActionPerformed(evt);
             }
         });
 
@@ -148,7 +156,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 670, Short.MAX_VALUE)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -160,7 +168,7 @@ public class Dashboard extends javax.swing.JFrame {
                         .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -219,12 +227,20 @@ public class Dashboard extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
-        button4.setForeground(new java.awt.Color(7, 173, 124));
-        button4.setText("Receive");
-        button4.setShadowColor(new java.awt.Color(7, 173, 124));
-        button4.addActionListener(new java.awt.event.ActionListener() {
+        receiveButton.setForeground(new java.awt.Color(7, 173, 124));
+        receiveButton.setText("Receive");
+        receiveButton.setShadowColor(new java.awt.Color(7, 173, 124));
+        receiveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                receiveButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                receiveButtonMouseExited(evt);
+            }
+        });
+        receiveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button4ActionPerformed(evt);
+                receiveButtonActionPerformed(evt);
             }
         });
 
@@ -245,12 +261,20 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        button5.setForeground(new java.awt.Color(80, 84, 105));
-        button5.setText("Copy");
-        button5.setShadowColor(new java.awt.Color(80, 84, 105));
-        button5.addActionListener(new java.awt.event.ActionListener() {
+        copyButton.setForeground(new java.awt.Color(80, 84, 105));
+        copyButton.setText("Copy");
+        copyButton.setShadowColor(new java.awt.Color(80, 84, 105));
+        copyButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                copyButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                copyButtonMouseExited(evt);
+            }
+        });
+        copyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button5ActionPerformed(evt);
+                copyButtonActionPerformed(evt);
             }
         });
 
@@ -260,11 +284,11 @@ public class Dashboard extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(receiveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(copyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
         jPanel5Layout.setVerticalGroup(
@@ -272,9 +296,9 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(receiveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sendButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                    .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(copyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29))
         );
 
@@ -285,7 +309,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(727, Short.MAX_VALUE))
+                .addContainerGap(729, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                     .addContainerGap(570, Short.MAX_VALUE)
@@ -602,9 +626,9 @@ public class Dashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_button1ActionPerformed
+    }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
         // TODO add your handling code here:
@@ -618,13 +642,13 @@ public class Dashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_sendButtonActionPerformed
 
-    private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
+    private void receiveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receiveButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_button4ActionPerformed
+    }//GEN-LAST:event_receiveButtonActionPerformed
 
-    private void button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button5ActionPerformed
+    private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_button5ActionPerformed
+    }//GEN-LAST:event_copyButtonActionPerformed
 
     private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
         // TODO add your handling code here:
@@ -635,13 +659,50 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_coinBalanceComponentShown
 
     private void sendButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendButtonMouseEntered
-        sendButton.setBackground(Color.decode("#7965C1"));
+        sendButton.setBackground(Color.decode("#1C45C2"));
+        sendButton.setForeground(Color.WHITE);
     }//GEN-LAST:event_sendButtonMouseEntered
 
     private void sendButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendButtonMouseExited
         sendButton.setBackground(Color.decode("#FFFFFF"));
-
+         sendButton.setForeground(Color.decode("#1C45C2"));
     }//GEN-LAST:event_sendButtonMouseExited
+
+    private void receiveButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_receiveButtonMouseEntered
+        // TODO add your handling code here:
+        receiveButton.setBackground(Color.decode("#07AD7C"));
+        receiveButton.setForeground(Color.WHITE);
+    }//GEN-LAST:event_receiveButtonMouseEntered
+
+    private void receiveButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_receiveButtonMouseExited
+        // TODO add your handling code here:
+        receiveButton.setBackground(Color.decode("#FFFFFF"));
+         receiveButton.setForeground(Color.decode("#07AD7C"));
+    }//GEN-LAST:event_receiveButtonMouseExited
+
+    private void copyButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_copyButtonMouseEntered
+        // TODO add your handling code here:
+        copyButton.setBackground(Color.decode("#505469"));
+        copyButton.setForeground(Color.WHITE);
+    }//GEN-LAST:event_copyButtonMouseEntered
+
+    private void copyButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_copyButtonMouseExited
+        // TODO add your handling code here:
+        copyButton.setBackground(Color.decode("#FFFFFF"));
+        copyButton.setForeground(Color.decode("#505469"));
+    }//GEN-LAST:event_copyButtonMouseExited
+
+    private void logoutButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButtonMouseEntered
+        // TODO add your handling code here:
+        logoutButton.setBackground(Color.decode("#0066FF"));
+        logoutButton.setForeground(Color.WHITE);
+    }//GEN-LAST:event_logoutButtonMouseEntered
+
+    private void logoutButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButtonMouseExited
+        // TODO add your handling code here:
+        logoutButton.setBackground(Color.decode("#FFFFFF"));
+        logoutButton.setForeground(Color.decode("#0066FF"));
+    }//GEN-LAST:event_logoutButtonMouseExited
 
     /**
      * @param args the command line arguments
@@ -679,11 +740,9 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private dashboard.Button button1;
     private dashboard.Button button2;
-    private dashboard.Button button4;
-    private dashboard.Button button5;
     private javax.swing.JLabel coinBalance;
+    private dashboard.Button copyButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -703,6 +762,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private dashboard.Button logoutButton;
     private dashboard.Panel panel1;
     private dashboard.Panel panel2;
     private dashboard.Panel panel3;
@@ -711,6 +771,7 @@ public class Dashboard extends javax.swing.JFrame {
     private dashboard.Panel panel6;
     private dashboard.Panel panel7;
     private dashboard.Panel panel8;
+    private dashboard.Button receiveButton;
     private dashboard.Button sendButton;
     private javax.swing.JLabel walletAddress;
     // End of variables declaration//GEN-END:variables
