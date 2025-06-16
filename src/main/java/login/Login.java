@@ -4,6 +4,7 @@
  */
 package login;
 
+import config.SupabaseUsers;
 import dashboard.Dashboard;
 import dashboard.DashboardData;
 import java.awt.Color;
@@ -24,6 +25,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    
     public Login() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -171,10 +173,9 @@ public class Login extends javax.swing.JFrame {
 
         jLabel6.setText("Don't have a Voltix?");
 
-        accWallet.setBackground(new java.awt.Color(28, 69, 194));
-        accWallet.setForeground(new java.awt.Color(255, 255, 255));
+        accWallet.setForeground(new java.awt.Color(28, 69, 194));
         accWallet.setText("Access Wallet");
-        accWallet.setShadowColor(new java.awt.Color(118, 118, 118));
+        accWallet.setShadowColor(new java.awt.Color(28, 69, 194));
         accWallet.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 accWalletMouseEntered(evt);
@@ -254,40 +255,73 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_keyStoreActionPerformed
 
     private void accWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accWalletActionPerformed
-        String keyStoreText = keyStore.getText().trim();
+//        String keyStoreText = keyStore.getText().trim();
+//
+//        if (keyStoreText.isEmpty()) {
+//            JOptionPane.showMessageDialog(this,
+//                    "Private Key tidak boleh kosong!",
+//                    "Error",
+//                    JOptionPane.ERROR_MESSAGE);
+//            return;
+//        } else {
+//            try {
+//                loginWithPrivateKey(keyStoreText);
+//                String idData = getUserByPrivateKey(keyStoreText);
+//
+//                // Buat instance DashboardData dan simpan userId
+//                DashboardData dashboardData = new DashboardData(idData);
+//
+//                // Buka Dashboard.form dan kirim DashboardData
+//                Dashboard dashboard = new Dashboard();
+//                dashboard.setDashboardData(dashboardData);
+//                dashboard.setVisible(true);
+//                this.dispose();
+//
+//            } catch (IOException ex) {
+//                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
 
-        if (keyStoreText.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Private Key tidak boleh kosong!",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        } else {
-            try {
-                loginWithPrivateKey(keyStoreText);
-                String idData = getUserByPrivateKey(keyStoreText);
+String keyStoreText = keyStore.getText().trim();
 
-                // Buat instance DashboardData dan simpan userId
-                DashboardData dashboardData = new DashboardData(idData);
+if (keyStoreText.isEmpty()) {
+    JOptionPane.showMessageDialog(this,
+            "Private Key tidak boleh kosong!",
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    return;
+} else {
+    try {
+        loginWithPrivateKey(keyStoreText);
+        String idData = getUserByPrivateKey(keyStoreText);  // ambil user_id dari Supabase
 
-                // Buka Dashboard.form dan kirim DashboardData
-                Dashboard dashboard = new Dashboard();
-                dashboard.setDashboardData(dashboardData);
-                dashboard.setVisible(true);
-                this.dispose();
+        // ✅ Simpan userId ke global agar bisa dipakai di Dashboard
+        SupabaseUsers.setCurrentUserId(idData);
 
-            } catch (IOException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        // Buat instance DashboardData dan simpan userId
+        DashboardData dashboardData = new DashboardData(idData);
+
+        // Buka Dashboard dan kirimkan datanya
+        Dashboard dashboard = new Dashboard();
+        dashboard.setDashboardData(dashboardData);
+        dashboard.setVisible(true);
+        this.dispose();
+
+    } catch (IOException ex) {
+        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+
     }//GEN-LAST:event_accWalletActionPerformed
 
     private void accWalletMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accWalletMouseEntered
-        accWallet.setBackground(Color.decode("#0E2148"));
+        accWallet.setBackground(Color.decode("#1C45C2"));
+        accWallet.setForeground(Color.WHITE);
     }//GEN-LAST:event_accWalletMouseEntered
 
     private void accWalletMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accWalletMouseExited
-        accWallet.setBackground(Color.decode("#483AA0"));
+        accWallet.setBackground(Color.decode("#FFFFFF"));
+        accWallet.setForeground(Color.decode("#1C45C2"));
     }//GEN-LAST:event_accWalletMouseExited
 
     private void toRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toRegisterMouseClicked

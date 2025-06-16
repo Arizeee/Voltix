@@ -5,10 +5,13 @@
 package register;
 
 import config.SupabaseUsers;
+import config.SupabaseWallet;
 import dashboard.Dashboard;
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,6 +25,7 @@ public class Phrase extends javax.swing.JFrame {
      */
     public Phrase() {
         initComponents(); 
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     public Phrase(String nickname) {
@@ -168,20 +172,34 @@ public class Phrase extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setPreferredSize(new java.awt.Dimension(388, 100));
 
-        btnCopy.setBackground(new java.awt.Color(28, 69, 194));
-        btnCopy.setForeground(new java.awt.Color(255, 255, 255));
+        btnCopy.setForeground(new java.awt.Color(28, 69, 194));
         btnCopy.setText("Copy");
-        btnCopy.setShadowColor(new java.awt.Color(118, 118, 118));
+        btnCopy.setShadowColor(new java.awt.Color(28, 69, 194));
+        btnCopy.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnCopyMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnCopyMouseExited(evt);
+            }
+        });
         btnCopy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCopyActionPerformed(evt);
             }
         });
 
-        btnNextToWallet.setBackground(new java.awt.Color(28, 69, 194));
-        btnNextToWallet.setForeground(new java.awt.Color(255, 255, 255));
+        btnNextToWallet.setForeground(new java.awt.Color(28, 69, 194));
         btnNextToWallet.setText("Next");
-        btnNextToWallet.setShadowColor(new java.awt.Color(118, 118, 118));
+        btnNextToWallet.setShadowColor(new java.awt.Color(28, 69, 194));
+        btnNextToWallet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnNextToWalletMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnNextToWalletMouseExited(evt);
+            }
+        });
         btnNextToWallet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNextToWalletActionPerformed(evt);
@@ -234,26 +252,7 @@ public class Phrase extends javax.swing.JFrame {
                     .addContainerGap(48, Short.MAX_VALUE)))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 995, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 446, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        getContentPane().add(jPanel6, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -265,26 +264,64 @@ public class Phrase extends javax.swing.JFrame {
 
     private void btnNextToWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextToWalletActionPerformed
         try {
-//            SupabaseUsers.registerWallet();
-            JOptionPane.showMessageDialog(this, "Registrasi wallet berhasil!");
+        // ⚠️ Tidak perlu lagi registerWallet() di sini
 
-            // Buka dashboard (atau tampilan berikutnya)
-            Dashboard dashboard = new Dashboard(); // ganti sesuai nama
-            dashboard.setVisible(true);
-            this.dispose();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-            e.printStackTrace();
+        // Ambil Private Key
+        String privateKey = SupabaseUsers.getPrivateKeyFromUser();
+        if (privateKey != null) {
+            System.out.println("🔑 Private Key user saat ini: " + privateKey);
+        } else {
+            System.out.println("❌ Gagal mengambil private_key.");
         }
+
+        // Tampilkan notifikasi
+        JOptionPane.showMessageDialog(this, "Registrasi wallet berhasil!");
+
+        // Navigasi ke dashboard
+        Dashboard dashboard = new Dashboard();
+        dashboard.setVisible(true);
+        this.dispose();
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + ex.getMessage());
+    }
     }//GEN-LAST:event_btnNextToWalletActionPerformed
 
     private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
-        StringSelection stringSelection = new StringSelection(privateKeyArea.getText());
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(stringSelection, null);
-        JOptionPane.showMessageDialog(this, "Private Key disalin!");
+        String privateKey = SupabaseUsers.getPrivateKeyFromUser();
+    if (privateKey != null) {
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+            new StringSelection(privateKey), null);
+        JOptionPane.showMessageDialog(this, "Private Key berhasil disalin!");
+    } else {
+        JOptionPane.showMessageDialog(this, "Gagal menyalin Private Key.");
+    }
     }//GEN-LAST:event_btnCopyActionPerformed
+
+    private void btnCopyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCopyMouseEntered
+        // TODO add your handling code here:
+        btnCopy.setBackground(Color.decode("#1C45C2"));
+        btnCopy.setForeground(Color.WHITE);
+    }//GEN-LAST:event_btnCopyMouseEntered
+
+    private void btnCopyMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCopyMouseExited
+        // TODO add your handling code here:
+        btnCopy.setBackground(Color.decode("#FFFFFF"));
+        btnCopy.setForeground(Color.decode("#1C45C2"));
+    }//GEN-LAST:event_btnCopyMouseExited
+
+    private void btnNextToWalletMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextToWalletMouseEntered
+        // TODO add your handling code here:
+        btnNextToWallet.setBackground(Color.decode("#1C45C2"));
+        btnNextToWallet.setForeground(Color.WHITE);
+    }//GEN-LAST:event_btnNextToWalletMouseEntered
+
+    private void btnNextToWalletMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextToWalletMouseExited
+        // TODO add your handling code here:
+        btnNextToWallet.setBackground(Color.decode("#FFFFFF"));
+        btnNextToWallet.setForeground(Color.decode("#1C45C2"));
+    }//GEN-LAST:event_btnNextToWalletMouseExited
 
     /**
      * @param args the command line arguments

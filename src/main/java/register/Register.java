@@ -4,9 +4,13 @@
  */
 package register;
 
+import config.SupabaseUsers;
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.security.KeyPair;
 import java.util.Random;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import register.WalletData;
@@ -23,6 +27,7 @@ public class Register extends javax.swing.JFrame {
      */
     public Register() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     public static String generateRandomHex(int length) {
@@ -180,10 +185,17 @@ public class Register extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setPreferredSize(new java.awt.Dimension(388, 100));
 
-        accWallet.setBackground(new java.awt.Color(28, 69, 194));
-        accWallet.setForeground(new java.awt.Color(255, 255, 255));
+        accWallet.setForeground(new java.awt.Color(28, 69, 194));
         accWallet.setText("Next");
-        accWallet.setShadowColor(new java.awt.Color(118, 118, 118));
+        accWallet.setShadowColor(new java.awt.Color(28, 69, 194));
+        accWallet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                accWalletMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                accWalletMouseExited(evt);
+            }
+        });
         accWallet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 accWalletActionPerformed(evt);
@@ -213,18 +225,18 @@ public class Register extends javax.swing.JFrame {
             .addGap(0, 995, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addContainerGap(297, Short.MAX_VALUE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(298, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 446, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addContainerGap(48, Short.MAX_VALUE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(48, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         getContentPane().add(jPanel6, java.awt.BorderLayout.CENTER);
@@ -233,7 +245,7 @@ public class Register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void accWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accWalletActionPerformed
-    String nickname = nicknameField.getText().trim();
+     String nickname = nicknameField.getText().trim();
 
     if (nickname.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Nickname tidak boleh kosong.");
@@ -241,7 +253,7 @@ public class Register extends javax.swing.JFrame {
     }
 
     try {
-        // 1. Generate wallet dari WalletGenerator (secara benar)
+        // 1. Generate wallet dari WalletGenerator
         KeyPair keyPair = WalletGenerator.generateKeyPair();
 
         String privateKey = WalletGenerator.getPrivateKeyHex(keyPair.getPrivate());
@@ -256,17 +268,29 @@ public class Register extends javax.swing.JFrame {
         WalletData.walletAddress = walletAddress;
         WalletData.backupPhrase = backupPhrase;
 
-        // 3. Panggil service simpan user
-        RegisterService.registerUser(nickname); // bisa disesuaikan kalau mau kirim lebih banyak data
+        // 3. Panggil service simpan user + wallet
+        try {
+            SupabaseUsers.registerWallet(); // method penting!
+            System.out.println("✅ Register sukses!");
 
-        // 4. Buka form Phrase
-        Phrase phrase = new Phrase(); // bisa dikirim nickname juga kalau kamu mau
+            // Coba ambil private_key kembali untuk verifikasi
+            String retrievedPrivateKey = SupabaseUsers.getPrivateKeyFromUser();
+            System.out.println("🔐 Retrieved Private Key: " + retrievedPrivateKey);
+        } catch (Exception e) {
+            e.printStackTrace(); // tampilkan stack trace error di konsol
+            JOptionPane.showMessageDialog(this, "Gagal menyimpan wallet: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return; // stop eksekusi jika gagal simpan wallet
+        }
+
+        // 4. Buka form Phrase jika semua berhasil
+        Phrase phrase = new Phrase();
         phrase.setVisible(true);
         this.dispose();
 
     } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Gagal register: " + ex.getMessage());
-    } 
+        ex.printStackTrace(); // error dari proses di atas
+        JOptionPane.showMessageDialog(this, "Gagal register: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }  
     }//GEN-LAST:event_accWalletActionPerformed
 
     private void nicknameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nicknameFieldActionPerformed
@@ -280,6 +304,19 @@ public class Register extends javax.swing.JFrame {
     phrase.setVisible(true);
     this.dispose();    
     }//GEN-LAST:event_nicknameFieldActionPerformed
+
+    private void accWalletMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accWalletMouseEntered
+        // TODO add your handling code here:
+        
+        
+        accWallet.setBackground(Color.decode("#1C45C2"));
+        accWallet.setForeground(Color.WHITE);
+    }//GEN-LAST:event_accWalletMouseEntered
+
+    private void accWalletMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accWalletMouseExited
+              accWallet.setBackground(Color.decode("#FFFFFF"));
+        accWallet.setForeground(Color.decode("#1C45C2"));
+    }//GEN-LAST:event_accWalletMouseExited
 
     /**
      * @param args the command line arguments

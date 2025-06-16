@@ -4,10 +4,15 @@
  */
 package dashboard;
 
+import config.SupabaseUsers;
+import config.SupabaseWallet;
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.json.JSONObject;
 
 /**
  *
@@ -24,7 +29,29 @@ public class Dashboard extends javax.swing.JFrame {
     public Dashboard() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        loadUserAndWallet();
     }
+
+    private void loadUserAndWallet() {
+    String userId = SupabaseUsers.getCurrentUserId(); // Ambil ID yang diset saat register
+
+    try {
+        JSONObject user = SupabaseUsers.getUserById(userId);
+        JSONObject wallet = SupabaseWallet.getWalletByUserId(userId);
+
+        String nickname = user.getString("username");
+        String walletAddress = wallet.getString("wallet_address");
+        double balance = wallet.getDouble("balance");
+
+        lblNickname.setText(nickname);
+        lblwalletAddress.setText(walletAddress);
+        coinBalance.setText("" +balance);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Gagal mengambil data user/wallet: " + e.getMessage());
+    }
+}
 
     // Method untuk menerima DashboardData dari Login
     public void setDashboardData(DashboardData data) {
@@ -66,7 +93,7 @@ public class Dashboard extends javax.swing.JFrame {
             // Update UI components
             // jLabelUserId.setText("User ID: " + userId);
             coinBalance.setText(balance.toString());
-            walletAddress.setText(address);
+            lblwalletAddress.setText(address);
         }
     }
 
@@ -84,12 +111,13 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         logoutButton = new dashboard.Button();
+        lblNickname = new javax.swing.JLabel();
         panel2 = new dashboard.Panel();
         jPanel6 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         coinBalance = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        walletAddress = new javax.swing.JLabel();
+        lblwalletAddress = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         receiveButton = new dashboard.Button();
         sendButton = new dashboard.Button();
@@ -100,7 +128,7 @@ public class Dashboard extends javax.swing.JFrame {
         panel6 = new dashboard.Panel();
         jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        button2 = new dashboard.Button();
+        transactionB = new dashboard.Button();
         jLabel1 = new javax.swing.JLabel();
         panel3 = new dashboard.Panel();
         panel7 = new dashboard.Panel();
@@ -127,11 +155,11 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1000, 50));
 
         jLabel3.setFont(new java.awt.Font("Source Code Pro Semibold", 1, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(121, 101, 193));
+        jLabel3.setForeground(new java.awt.Color(28, 69, 194));
         jLabel3.setText("Welcome to Voltix.");
 
         logoutButton.setBackground(new java.awt.Color(242, 245, 255));
-        logoutButton.setForeground(new java.awt.Color(153, 153, 153));
+        logoutButton.setForeground(new java.awt.Color(0, 102, 255));
         logoutButton.setText("Logout");
         logoutButton.setShadowColor(new java.awt.Color(0, 102, 255));
         logoutButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -148,6 +176,10 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
+        lblNickname.setFont(new java.awt.Font("Source Code Pro Black", 0, 16)); // NOI18N
+        lblNickname.setForeground(new java.awt.Color(28, 69, 194));
+        lblNickname.setText("jLabel2");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -155,7 +187,9 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 670, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblNickname)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 550, Short.MAX_VALUE)
                 .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -165,7 +199,9 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addComponent(jLabel3))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(lblNickname)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -197,9 +233,9 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         jLabel4.setText("Vol Balance");
 
-        walletAddress.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        walletAddress.setForeground(new java.awt.Color(14, 33, 72));
-        walletAddress.setText("address");
+        lblwalletAddress.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        lblwalletAddress.setForeground(new java.awt.Color(14, 33, 72));
+        lblwalletAddress.setText("address");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -208,7 +244,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(walletAddress)
+                    .addComponent(lblwalletAddress)
                     .addComponent(jLabel4)
                     .addComponent(coinBalance))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -221,8 +257,8 @@ public class Dashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(coinBalance)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(walletAddress)
-                .addContainerGap())
+                .addComponent(lblwalletAddress)
+                .addGap(14, 14, 14))
         );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -416,7 +452,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panel2Layout = new javax.swing.GroupLayout(panel2);
@@ -426,11 +462,11 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(panel2Layout.createSequentialGroup()
                 .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel2Layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panel2Layout.createSequentialGroup()
                         .addGap(50, 50, 50)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel2Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         panel2Layout.setVerticalGroup(
@@ -438,9 +474,9 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(panel2Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         panel1.add(panel2);
@@ -448,13 +484,13 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(242, 245, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(1000, 50));
 
-        button2.setBackground(new java.awt.Color(242, 245, 255));
-        button2.setForeground(new java.awt.Color(28, 69, 194));
-        button2.setText("See all transactions");
-        button2.setShadowColor(new java.awt.Color(242, 245, 255));
-        button2.addActionListener(new java.awt.event.ActionListener() {
+        transactionB.setBackground(new java.awt.Color(242, 245, 255));
+        transactionB.setForeground(new java.awt.Color(28, 69, 194));
+        transactionB.setText("See all transactions");
+        transactionB.setShadowColor(new java.awt.Color(242, 245, 255));
+        transactionB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button2ActionPerformed(evt);
+                transactionBActionPerformed(evt);
             }
         });
 
@@ -469,7 +505,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 703, Short.MAX_VALUE)
-                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(transactionB, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -477,7 +513,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(transactionB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -627,12 +663,20 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here:
+    SupabaseUsers.setCurrentUserId(null);
+
+    // Tampilkan kembali halaman Login
+    new login.Login().setVisible(true);
+
+    // Tutup Dashboard
+    this.dispose();
+        
     }//GEN-LAST:event_logoutButtonActionPerformed
 
-    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button2ActionPerformed
+    private void transactionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionBActionPerformed
+        this.dispose();
+        new AllTransactions().setVisible(true); 
+    }//GEN-LAST:event_transactionBActionPerformed
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // Ambil userId dari Dashboard
@@ -643,11 +687,19 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_sendButtonActionPerformed
 
     private void receiveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receiveButtonActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        new Receive().setVisible(true); 
     }//GEN-LAST:event_receiveButtonActionPerformed
 
     private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
-        // TODO add your handling code here:
+            String privateKey = SupabaseUsers.getPrivateKeyFromUser();
+    if (privateKey != null) {
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+            new StringSelection(privateKey), null);
+        JOptionPane.showMessageDialog(this, "Private Key berhasil disalin!");
+    } else {
+        JOptionPane.showMessageDialog(this, "Gagal menyalin Private Key.");
+    }   
     }//GEN-LAST:event_copyButtonActionPerformed
 
     private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
@@ -740,7 +792,6 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private dashboard.Button button2;
     private javax.swing.JLabel coinBalance;
     private dashboard.Button copyButton;
     private javax.swing.JLabel jLabel1;
@@ -762,6 +813,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel lblNickname;
+    private javax.swing.JLabel lblwalletAddress;
     private dashboard.Button logoutButton;
     private dashboard.Panel panel1;
     private dashboard.Panel panel2;
@@ -773,6 +826,6 @@ public class Dashboard extends javax.swing.JFrame {
     private dashboard.Panel panel8;
     private dashboard.Button receiveButton;
     private dashboard.Button sendButton;
-    private javax.swing.JLabel walletAddress;
+    private dashboard.Button transactionB;
     // End of variables declaration//GEN-END:variables
 }

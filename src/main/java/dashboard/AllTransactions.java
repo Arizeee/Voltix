@@ -4,6 +4,8 @@
  */
 package dashboard;
 
+import java.awt.Color;
+
 /**
  *
  * @author 62877
@@ -59,7 +61,7 @@ public class AllTransactions extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         panel4 = new dashboard.Panel();
-        button1 = new dashboard.Button();
+        cancelButton = new dashboard.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 500));
@@ -332,23 +334,35 @@ public class AllTransactions extends javax.swing.JFrame {
         panel4.setRoundTopLeft(25);
         panel4.setRoundTopRight(25);
 
-        button1.setBackground(new java.awt.Color(28, 69, 194));
-        button1.setForeground(new java.awt.Color(255, 255, 255));
-        button1.setText("button1");
-        button1.setPreferredSize(new java.awt.Dimension(1000, 50));
-        button1.setShadowColor(new java.awt.Color(28, 69, 194));
+        cancelButton.setForeground(new java.awt.Color(28, 69, 194));
+        cancelButton.setText("Cancel");
+        cancelButton.setPreferredSize(new java.awt.Dimension(1000, 50));
+        cancelButton.setShadowColor(new java.awt.Color(28, 69, 194));
+        cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cancelButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cancelButtonMouseExited(evt);
+            }
+        });
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel4Layout = new javax.swing.GroupLayout(panel4);
         panel4.setLayout(panel4Layout);
         panel4Layout.setHorizontalGroup(
             panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(cancelButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panel4Layout.setVerticalGroup(
             panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel4Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -375,6 +389,23 @@ public class AllTransactions extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        this.dispose();
+        new Dashboard().setVisible(true);
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void cancelButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseEntered
+        // TODO add your handling code here:
+        cancelButton.setBackground(Color.decode("#1C45C2"));
+        cancelButton.setForeground(Color.WHITE);
+    }//GEN-LAST:event_cancelButtonMouseEntered
+
+    private void cancelButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseExited
+        // TODO add your handling code here:
+        cancelButton.setBackground(Color.decode("#FFFFFF"));
+        cancelButton.setForeground(Color.decode("#1C45C2"));
+    }//GEN-LAST:event_cancelButtonMouseExited
 
     /**
      * @param args the command line arguments
@@ -413,7 +444,7 @@ public class AllTransactions extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPane;
-    private dashboard.Button button1;
+    private dashboard.Button cancelButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

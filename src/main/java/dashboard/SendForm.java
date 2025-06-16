@@ -4,6 +4,7 @@
  */
 package dashboard;
 
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -53,7 +54,7 @@ public class SendForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         destUsernameTextField1 = new dashboard.TextField();
         jPanel7 = new javax.swing.JPanel();
-        button1 = new login.Button();
+        cancelButton = new login.Button();
         sendButton = new login.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -254,18 +255,26 @@ public class SendForm extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setPreferredSize(new java.awt.Dimension(388, 100));
 
-        button1.setForeground(new java.awt.Color(0, 0, 0));
-        button1.setText("Cancel");
-        button1.setShadowColor(new java.awt.Color(28, 69, 194));
-        button1.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setForeground(new java.awt.Color(0, 0, 0));
+        cancelButton.setText("Cancel");
+        cancelButton.setShadowColor(new java.awt.Color(28, 69, 194));
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
 
         sendButton.setBackground(new java.awt.Color(28, 69, 194));
         sendButton.setForeground(new java.awt.Color(255, 255, 255));
         sendButton.setText("Send");
+        sendButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                sendButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                sendButtonMouseExited(evt);
+            }
+        });
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sendButtonActionPerformed(evt);
@@ -280,7 +289,7 @@ public class SendForm extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(sendButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
+                    .addComponent(cancelButton, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
         );
         jPanel7Layout.setVerticalGroup(
@@ -288,7 +297,7 @@ public class SendForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -324,9 +333,10 @@ public class SendForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_destUsernameTextFieldActionPerformed
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button1ActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        this.dispose();
+        new Dashboard().setVisible(true);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // TODO add your handling code here:
@@ -411,6 +421,16 @@ public class SendForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_destUsernameTextField1ActionPerformed
 
+    private void sendButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendButtonMouseEntered
+        sendButton.setBackground(Color.decode("#1C45C2"));
+        sendButton.setForeground(Color.WHITE);
+    }//GEN-LAST:event_sendButtonMouseEntered
+
+    private void sendButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendButtonMouseExited
+        sendButton.setBackground(Color.decode("#FFFFFF"));
+        sendButton.setForeground(Color.decode("#1C45C2"));
+    }//GEN-LAST:event_sendButtonMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -449,7 +469,7 @@ public class SendForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private dashboard.TextField amountTextField;
-    private login.Button button1;
+    private login.Button cancelButton;
     private dashboard.TextField destUsernameTextField;
     private dashboard.TextField destUsernameTextField1;
     private javax.swing.JLabel jLabel1;
